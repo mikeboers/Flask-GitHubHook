@@ -1,1 +1,1 @@
-web: python github-backup-hook.py
+web: ./venv/bin/python github-backup-hook.py
