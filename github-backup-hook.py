@@ -55,7 +55,6 @@ def main():
         os.makedirs(local_path)
         call(['git', 'clone', '--mirror', remote_url, local_path])
     else:
-        call(['git', '--git-dir', local_path, 'remote', 'set-url', remote_url])
         call(['git', '--git-dir', local_path, 'fetch', 'origin'])
 
     return 'ok'
