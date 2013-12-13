@@ -23,3 +23,4 @@ sudo cp var/upstart/* /etc/init/
 sudo start github-backup-hook
 ~~~
 
+5. Add the hook to every you want to back up.
