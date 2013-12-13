@@ -47,13 +47,13 @@ def main():
         return 'owner not permitted'
 
     local_path = os.path.abspath(os.path.join(
-        __file__, '..', 'repositories', owner_name, repo_name + '.git'
+        __file__, '..', 'var', 'repositories', owner_name, repo_name + '.git'
     ))
     remote_url = 'git@github.com:%s/%s.git' % (owner_name, repo_name)
 
     if not os.path.exists(local_path):
         os.makedirs(local_path)
-        call(['git', 'clone', '--bare', remote_url, local_path])
+        call(['git', 'clone', '--mirror', remote_url, local_path])
     else:
         call(['git', '--git-dir', local_path, 'fetch', remote_url])
 
