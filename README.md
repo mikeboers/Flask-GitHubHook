@@ -12,7 +12,7 @@ Installation
 3. Setup an SSH key for the user under which this will run, and add it to the GitHub account.
 4. Install the code:
 
-~~~
+~~~bash
 git clone git@github.com:FluentImage/github-backup-hook.git
 cd github-backup-hook
 virtualenv --no-site-packages venv
@@ -23,4 +23,4 @@ sudo cp var/upstart/* /etc/init/
 sudo start github-backup-hook
 ~~~
 
-5. Add the hook to every you want to back up.
+5. Add the hook (`http://dev1.fluentimage.com:8010/`) to every you want to back up.
