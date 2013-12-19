@@ -24,7 +24,15 @@ cd Flask-GitHubHook
 ### Running in Development
 
 ~~~
+DEBUG=1 python -m githubhookapp
+# or
 honcho start
+~~~
+
+Send the example payload:
+
+~~~
+curl -d "payload=$(cat example-payload.json)" http://localhost:5000/hook
 ~~~
 
 
