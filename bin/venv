@@ -1,0 +1,8 @@
+#!/bin/bash
+
+_self="$(cd "$(dirname "${BASH_SOURCE[0]}")/.."; pwd)"
+
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+. "$_self/bin/activate"
+
+exec "$@"

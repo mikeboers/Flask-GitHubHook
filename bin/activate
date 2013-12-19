@@ -1,15 +1,12 @@
-
+# This MUST be sourced, not run.
 
 _self="$(cd "$(dirname "${BASH_SOURCE[0]}")/.."; pwd)"
-_venv="$_self/var/venv"
+_venv="$_self/var/venv-$(uname)-$(arch)"
 
 if [[ ! -f "$_venv/bin/python" ]]; then
     virtualenv --no-site-packages "$_venv"
+    pip install --upgrade setuptools
+    pip install --upgrade pip
 fi
 
 . "$_venv/bin/activate"
-
-pip install -r requirements-app.txt
-pip install -e "$self"
-
-

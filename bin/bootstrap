@@ -1,0 +1,8 @@
+#!/bin/bash
+
+_self="$(cd "$(dirname "${BASH_SOURCE[0]}")/.."; pwd)"
+
+. "$_self/bin/activate"
+
+pip install -r "$_self/requirements-app.txt"
+pip install -e "$_self"
