@@ -39,8 +39,9 @@ curl -L -d "payload=$(cat example-payload.json)" http://localhost:5000
 ### Running in Production
 
 ~~~
-honcho export --app githubhook --port 8000 --log var/log upstart var/etc/upstart
-sudo cp var/upstart/* /etc/init/
+honcho export --app githubhook --port 8010 --log var/log upstart var/etc/init
+sudo cp var/etc/init/* /etc/init/
+sudo initctl reload-configuration
 sudo start githubhook
 ~~~
 
