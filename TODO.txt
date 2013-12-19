@@ -1,0 +1,14 @@
+
+- ./install.sh to create the virtualenv, install requirements, create upstart scripts, etc..
+- flask.ext.githubhooks.blueprint for accepting an event and not doing much with it
+  - makes sure it is from GitHub, though
+- flask.ext.githubhooks.app
+  - registers the hook to your accounts via the API
+  - calls executables in etc/hooks
+    - a thread is spawned which runs the jobs in sequence
+    - the results from the jobs are stuffed into a database, or maybe just memory
+    - the results from the jobs are availible to anyone who has access to
+      the repos on GitHub
+    - 000-backup.sh runs the local backup
+    - 100-venv-install.sh installs python packages into a testing venv
+    - 500-sphinx-docs.sh builds the docs and syncs them to GITHUB_DOCS_DIR

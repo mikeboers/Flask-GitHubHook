@@ -59,6 +59,3 @@ def main():
 
     return 'ok'
 
-
-app.run(host='', debug=bool(os.environ.get('DEBUG')), port=int(os.environ.get('PORT', 5000)))
-

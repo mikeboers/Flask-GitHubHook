@@ -1,1 +1,1 @@
-web: ./venv/bin/python github-backup-hook.py
+web: ./var/venv/bin/gunicorn -b 0.0.0.0:$PORT githubhookapp.main:app

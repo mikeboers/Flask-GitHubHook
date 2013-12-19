@@ -1,7 +1,7 @@
-GitHub Backup Hook
-==================
+Flask-GitHubHook
+================
 
-A tiny Flask app for pulling everything pushed to GitHub.
+A Flask blueprint for recieving GitHub post-recieve webhooks, and a small Flask app for running shell scripts.
 
 
 Installation
@@ -13,14 +13,26 @@ Installation
 4. Install the code:
 
 ~~~bash
-git clone git@github.com:FluentImage/github-backup-hook.git
-cd github-backup-hook
-virtualenv --no-site-packages venv
-. venv/bin/activate
-pip install flask honcho
-honcho export --port 8010 --user dev --log var/log upstart var/upstart
-sudo cp var/upstart/* /etc/init/
-sudo start github-backup-hook
+git clone git@github.com:mikeboers/Flask-GitHubHook.git
+cd Flask-GitHubHook
+. bin/bootstrap.sh
 ~~~
 
 5. Add the hook (`http://dev1.fluentimage.com:8010/`) to every you want to back up.
+
+
+### Running in Development
+
+~~~
+honcho start
+~~~
+
+
+### Running in Production
+
+~~~
+honcho export --app githubhook --port 8000 --log var/log upstart var/upstart
+sudo cp var/upstart/* /etc/init/
+sudo start githubhook
+~~~
+
