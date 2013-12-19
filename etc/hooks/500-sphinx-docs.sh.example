@@ -1,0 +1,26 @@
+
+if [[ -z "$GITHUB_CLONE" ]]; then
+    exit
+fi
+
+if [[ ! -f venv/bin/python ]]; then
+    exit
+fi
+
+work="checkouts/$GITHUB_NAME"
+if [[ ! -f "$work/docs/conf.py" ]]; then
+    exit
+fi
+
+if [[ ! -f venv/bin/sphinx-build ]]; then
+    venv/bin/pip install sphinx
+fi
+
+make -C "$work/docs" html
+ok=$?
+
+if [[ $ok == 0 && -n "$SPHINX_DIR" ]]; then
+    dst="$SPHINX_DIR/$GITHUB_NAME"
+    mkdir -p "$dst"
+    rsync -avx "$work/docs/_build/html/" "$dst/"
+fi

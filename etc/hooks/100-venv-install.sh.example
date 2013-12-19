@@ -1,0 +1,19 @@
+
+if [[ -z "$GITHUB_CLONE" ]]; then
+    exit
+fi
+
+work="checkouts/$GITHUB_NAME"
+mkdir -p "$work"
+git --git-dir "$GITHUB_CLONE" --work-tree "$work" reset --hard
+
+if [[ ! -f "$work/setup.py" ]]; then
+    exit
+fi
+
+if [[ ! -f venv/bin/python ]]; then
+  virtualenv --no-site-packages venv
+fi
+
+venv/bin/pip install --upgrade "$work"
+

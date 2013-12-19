@@ -1,14 +1,51 @@
 
-- ./install.sh to create the virtualenv, install requirements, create upstart scripts, etc..
-- flask.ext.githubhooks.blueprint for accepting an event and not doing much with it
-  - makes sure it is from GitHub, though
-- flask.ext.githubhooks.app
-  - registers the hook to your accounts via the API
-  - calls executables in etc/hooks
-    - a thread is spawned which runs the jobs in sequence
-    - the results from the jobs are stuffed into a database, or maybe just memory
-    - the results from the jobs are availible to anyone who has access to
-      the repos on GitHub
-    - 000-backup.sh runs the local backup
-    - 100-venv-install.sh installs python packages into a testing venv
-    - 500-sphinx-docs.sh builds the docs and syncs them to GITHUB_DOCS_DIR
+
+- registers the hook to your accounts via the API
+- calls executables in [var/]etc/hooks
+
+  - a thread is spawned which runs the jobs in sequence
+  - the results from the jobs are stuffed into a database, or maybe just memory
+  - the results from the jobs are availible to anyone who has access to
+    the repos on GitHub
+
+  - calling API:
+
+      - the JSON payload is fed into stdin
+      - they all run in var/sandbox
+
+      Option 1: assert that we will clone, then pass path:
+        call([hook, path_to_clone])
+      Option 2: pass owner and repo; other tools can assume backup ran
+      and look for repos in var/repos/$owner/$repo.git
+        call([hook, owner, repo])
+      Option 3: no arguments are passed, but a ton of envvars are:
+        GITHUB_CLONE: the local bare clone
+        GITHUB_{OWNER,REPO}
+        GITHUB_NAME: owner/name
+
+  - 000-backup.sh runs the local backup
+  - 100-install.sh installs python packages into a testing venv
+
+    if [[ ! -f venv/bin/python ]]; then
+      virtualenv --no-site-packages venv
+    fi
+    . venv/bin/activate
+
+    work=checkouts/$GITHUB_NAME
+    mkdir -p $work
+    cd $work
+    
+    git --git-dir $GITHUB_CLONE --work-tree . reset --hard
+    pip install --upgrade .
+
+  - 500-sphinx-docs.sh builds the docs and syncs them to GITHUB_DOCS_DIR
+
+    . venv/bin/activate
+    pip install sphinx
+    cd $GITHUB_OWNER/$GITHUB_NAME
+    if [[ -f docs/conf.py ]]; then
+      cd docs
+      make html
+    fi
+
+
