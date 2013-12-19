@@ -1,4 +1,4 @@
-from flask import url_for, request
+from flask import url_for, request, redirect
 
 from .core import app
 
@@ -9,3 +9,8 @@ def do_index():
         request.host_url.rstrip('/'),
         url_for('githubhook.post'),
     )
+
+@app.route('/', methods=['POST'])
+def do_redirect():
+    return redirect(url_for('githubhook.post'), code=307)
+

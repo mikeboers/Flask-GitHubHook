@@ -32,14 +32,14 @@ honcho start
 Send the example payload:
 
 ~~~
-curl -d "payload=$(cat example-payload.json)" http://localhost:5000/hook
+curl -L -d "payload=$(cat example-payload.json)" http://localhost:5000
 ~~~
 
 
 ### Running in Production
 
 ~~~
-honcho export --app githubhook --port 8000 --log var/log upstart var/upstart
+honcho export --app githubhook --port 8000 --log var/log upstart var/etc/upstart
 sudo cp var/upstart/* /etc/init/
 sudo start githubhook
 ~~~
