@@ -12,6 +12,8 @@ if [[ ! -f "$work/docs/conf.py" ]]; then
     exit
 fi
 
+. venv/bin/activate
+
 if [[ ! -f venv/bin/sphinx-build ]]; then
     venv/bin/pip install sphinx
 fi
