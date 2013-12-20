@@ -1,11 +1,15 @@
 import errno
 import functools
 import json
+import logging
 import os
 from subprocess import call
 
 from flask import Blueprint, request, current_app
 from . import utils
+
+
+log = logging.getLogger(__name__)
 
 
 def require_from_github(func):
@@ -37,7 +41,9 @@ def do_post():
 
     allowed_owners = current_app.config['GITHUB_ALLOWED_OWNERS']
     if allowed_owners is not None and owner_name not in allowed_owners:
-        return 'owner %r not permitted' % owner_name
+        msg = 'owner %r not permitted' % owner_name
+        log.warning(msg)
+        return msg
 
     clone_dir = current_app.config['GITHUB_CLONE_DIR']
     if clone_dir is not None:
@@ -80,7 +86,8 @@ class GitHubHook(object):
 
     def assert_remote_netmask(self):
         if not current_app.debug and not utils.addr_in_network(request.remote_addr, self.remote_netmask):
-            return 'You are not GitHub.'
+            log.warning('not from GitHub')
+            return 'remote address is not from GitHub'
 
 
 

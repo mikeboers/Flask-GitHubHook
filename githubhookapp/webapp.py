@@ -1,6 +1,11 @@
-from flask import url_for, request, redirect
+from flask import url_for, request
+from flask.ext.githubhook.core import do_post
 
 from .core import app
+from .logs import setup_logs
+
+
+setup_logs(app)
 
 
 @app.route('/')
