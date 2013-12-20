@@ -10,8 +10,8 @@ from flask import Flask
 from flask.ext.githubhook import GitHubHook
 
 app = Flask(__name__)
-app.root_path = os.path.abspath(os.path.join(__file__, '..', '..'))
-app.instance_path = os.path.join(app.root_path, 'var')
+app.instance_path = os.path.abspath(os.path.join(__file__, '..', '..', 'var'))
+
 
 app.config['GITHUB_ALLOWED_OWNERS'] = set(['mikeboers', 'FluentImage'])
 app.debug = app.debug or bool(os.environ.get('DEBUG'))
@@ -49,7 +49,8 @@ def schedule_hooks(payload):
 
     hooks = []
     for path in (
-        os.path.join(app.root_path, 'etc', 'hooks'),
+        os.path.join(app.root_path, 'hooks'),
+        os.path.join(app.instance_path, 'hooks'),
         os.path.join(app.instance_path, 'etc', 'hooks'),
     ):
         try:
