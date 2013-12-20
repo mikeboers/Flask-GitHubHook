@@ -15,7 +15,6 @@ def do_index():
         url_for('githubhook.post'),
     )
 
-@app.route('/', methods=['POST'])
-def do_redirect():
-    return redirect(url_for('githubhook.post'), code=307)
+# Register this again, since that is what I have set on all my repos by hand.
+app.route('/', methods=['POST'])(do_post)
 
