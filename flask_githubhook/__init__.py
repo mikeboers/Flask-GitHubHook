@@ -1,1 +1,1 @@
-from .core import GitHubHook
+from flask_githubhook.core import GitHubHook

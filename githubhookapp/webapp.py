@@ -1,8 +1,8 @@
 from flask import url_for, request
 from flask.ext.githubhook.core import do_post
 
-from .core import app
-from .logs import setup_logs
+from githubhookapp.core import app
+from githubhookapp.logs import setup_logs
 
 
 setup_logs(app)
@@ -15,6 +15,6 @@ def do_index():
         url_for('githubhook.post'),
     )
 
+
 # Register this again, since that is what I have set on all my repos by hand.
 app.route('/', methods=['POST'])(do_post)
-

@@ -6,7 +6,7 @@ import os
 from subprocess import call
 
 from flask import Blueprint, request, current_app
-from . import utils
+from flask_githubhook import utils
 
 
 log = logging.getLogger(__name__)
@@ -88,6 +88,4 @@ class GitHubHook(object):
         if not current_app.debug and not utils.addr_in_network(request.remote_addr, self.remote_netmask):
             log.warning('not from GitHub')
             return 'remote address is not from GitHub'
-
-
 
