@@ -1,10 +1,10 @@
 from githubhookapp.core import app
-from githubhookapp.github import get_user_info
+from githubhookapp.github import api
 
 
 @app.context_processor
 def auth_context():
-    user_info = get_user_info() or {}
+    user_info = api('user') or {}
     return {
         'user_info': user_info,
         'user_login': user_info.get('login'),
