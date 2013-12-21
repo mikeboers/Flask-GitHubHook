@@ -38,7 +38,6 @@ def github_api(method, **params):
 
 @memo
 def _github_api(method, **params):
-    method = method.format(**params)
     return requests.get(
         'https://api.github.com/' + method.strip('/'),
         params=params,

@@ -6,7 +6,12 @@
 <p>
     Organizations (${len(user_orgs)}):
     <ul>
-        % for org in user_orgs:
-            <li><a href="${url_for('org', login=org['login'])}">${org['login']|h}</a>
+        % for org in sorted(user_orgs, key=lambda x: x['login'].lower()):
+            <li>
+                <img class="org-avatar" src="${org['avatar_url']}"/>
+                <a href="${url_for('org', login=org['login'])}">
+                    ${org['login']|h}
+                </a>
+            </li>
         % endfor
     </ul>

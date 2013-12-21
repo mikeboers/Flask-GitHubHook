@@ -16,3 +16,19 @@ body {
 p {
     margin: 0 0 1em;
 }
+
+ul, ol, dl {
+    margin: 0;
+    padding-bottom: 0;
+}
+
+img.org-avatar {
+    width: 1.2em;
+    height: 1.2em;
+    position: relative;
+    top: 0.2em;
+}
+
+#repo-list > li {
+    margin-bottom: 1em;
+}

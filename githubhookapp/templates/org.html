@@ -1,0 +1,37 @@
+<%inherit file="/_base.html"/>
+<%! import pprint %>
+<% hook_url = request.host_url.rstrip('/') + url_for('githubhook.post') %>
+<h1>
+    <img class="org-avatar" src="${org['avatar_url']}"/>
+    ${org['login']|h}
+</h1>
+<p>Repositories (${len(repos)}):
+    <ul id="repo-list">
+        % for repo in sorted(repos, key=lambda x:x['name']):
+            <li>
+                ${repo['name']|h}
+                <%
+                    hooks = repo_hooks[repo['name']]
+                    is_hooked = False
+                %>
+                <ul>
+                    % if hooks:
+                        % for hook in hooks:
+                            <li>
+                                ${hook['name']}
+                                % if hook['name'] == 'web':
+                                    <% is_hooked = is_hooked or hook['config']['url'] == hook_url %>
+                                    &lt;${hook['config']['url']|h}&gt;
+                                % endif
+                        % endfor
+                    % endif
+                </ul>
+                % if is_hooked:
+                    [<a href="#">remove hook</a>]
+                % else:
+                    [<a href="${url_for('add_hook', login=org['login'], name=repo['name'])}">ADD HOOK</a>]
+                % endif
+
+            </li>
+        % endfor
+    </ul>
