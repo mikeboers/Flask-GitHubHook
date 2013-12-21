@@ -22,5 +22,5 @@ def auth_check():
             return redirect(url_for('not_authorized'))
         return
 
-    if request.endpoint not in ('login', 'github_login', 'github_callback'):
+    if request.endpoint not in ('login', 'github_login', 'github_callback', 'static'):
         return redirect(url_for('login'))
