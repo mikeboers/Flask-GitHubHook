@@ -7,10 +7,10 @@ from . import *
 
 @app.route('/org/<login>', endpoint='org')
 def org(login):
-    org = github_api('orgs/%s' % login)
-    repos = github_api('orgs/%s/repos' % login)
+    org = github_get('orgs/%s' % login)
+    repos = github_get('orgs/%s/repos' % login)
     repo_hooks = dict(
-        (repo['name'], github_api('repos/%s/%s/hooks' % (login, repo['name'])))
+        (repo['name'], github_get('repos/%s/%s/hooks' % (login, repo['name'])))
         for repo in repos
     )
     return render_template('org.html',
@@ -19,15 +19,18 @@ def org(login):
         repo_hooks=repo_hooks,
     )
 
+
 @app.route('/org/<login>/<name>/add_hook')
 def add_hook(login, name):
 
     hook_url = request.host_url.rstrip('/') + url_for('githubhook.post')
-    res = requests.post('https://api.github.com/repos/%s/%s/hooks' % (login, name), data=json.dumps({
-        'name': 'web',
-        'config': {
+    res = github_post('repos/%s/%s/hooks' % (login, name),
+        name='web',
+        config={
             'url': hook_url,
             'content_type': 'form',
-        }, 
-    }))
-    return res.text
+        },
+        events=['push'],
+        active=True,
+    )
+    return json.dumps(res, indent=4, sort_keys=True)

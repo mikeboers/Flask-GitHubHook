@@ -1,3 +1,4 @@
+import json
 import os
 import shelve
 
@@ -31,14 +32,27 @@ mako = MakoTemplates(app)
 memo = Memoizer({})
 
 
-def github_api(method, **params):
+def github_get(method, **params):
     access_token = session.get('access_token')
-    if access_token:
-        return _github_api(method, access_token=access_token, **params)
+    if not access_token:
+        return
+    return _github_api_get(method, access_token=access_token, **params)
+
 
 @memo
-def _github_api(method, **params):
+def _github_api_get(method, **kwargs):
     return requests.get(
         'https://api.github.com/' + method.strip('/'),
-        params=params,
+        params=kwargs,
+    ).json()
+
+
+def github_post(method, **kwargs):
+    access_token = session.get('access_token')
+    if not access_token:
+        return
+    return requests.post(
+        'https://api.github.com/' + method.strip('/'),
+        data=json.dumps(kwargs),
+        params={'access_token': access_token},
     ).json()
