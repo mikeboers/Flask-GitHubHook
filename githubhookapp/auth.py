@@ -1,12 +1,26 @@
-from githubhookapp.core import app
-from githubhookapp.github import api
+from flask import session, request, redirect, url_for
+
+from githubhookapp.core import app, github_api
 
 
 @app.context_processor
 def auth_context():
-    user_info = api('user') or {}
     return {
-        'user_info': user_info,
-        'user_login': user_info.get('login'),
+        'user': github_api('user') or {},
     }
 
+
+@app.before_request
+def auth_check():
+
+    if 'access_token' in session:
+        user = github_api('user')
+        if (
+            user['login'] not in app.config['GITHUB_ALLOWED_OWNERS'] and
+            request.endpoint != 'not_authorized'
+        ):
+            return redirect(url_for('not_authorized'))
+        return
+
+    if request.endpoint not in ('login', 'github_login', 'github_callback'):
+        return redirect(url_for('login'))

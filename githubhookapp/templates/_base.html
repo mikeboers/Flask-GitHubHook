@@ -3,12 +3,12 @@
     <link rel="stylesheet" href="/css/screen.css">
 <body>
 
-<p>
-    % if user_login:
+% if user:
+    <p>
         You are logged in in as 
-            <strong><a href="https://github.com/${user_login|h}">${user_login|h}</a></strong>.
-    % else:
-        You are not logged in; <a href="/github/login">login now</a>.
-    % endif
+            <strong><a href="https://github.com/${user['login']|h}">${user['login']|h}</a></strong>.
+            [<a href="${url_for('logout')}">Logout</a>]
+    </p>
+% endif
 
 ${next.body()}

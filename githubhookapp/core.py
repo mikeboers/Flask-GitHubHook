@@ -1,6 +1,8 @@
 import os
+import shelve
 
-from flask import Flask
+import requests
+from flask import Flask, session
 from flask.ext.mako import MakoTemplates
 from flask.ext.githubhook import GitHubHook
 from memoize import Memoizer
@@ -27,3 +29,17 @@ githubhook = GitHubHook(app=app, url_prefix='/hook')
 mako = MakoTemplates(app)
 
 memo = Memoizer({})
+
+
+def github_api(method, **params):
+    access_token = session.get('access_token')
+    if access_token:
+        return _github_api(method, access_token=access_token, **params)
+
+@memo
+def _github_api(method, **params):
+    method = method.format(**params)
+    return requests.get(
+        'https://api.github.com/' + method.strip('/'),
+        params=params,
+    ).json()

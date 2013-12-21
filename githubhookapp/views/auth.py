@@ -6,6 +6,24 @@ import requests
 from . import *
 
 
+@app.route('/login')
+def login():
+    if 'access_token' in session:
+        return redirect(url_for('index'))
+    return render_template('login.html')
+
+
+@app.route('/logout')
+def logout():
+    session.pop('access_token', None)
+    return redirect(url_for('index'))
+
+
+@app.route('/not_authorized')
+def not_authorized():
+    return render_template('not_authorized.html')
+
+
 @app.route('/github/login')
 def github_login():
     return redirect(

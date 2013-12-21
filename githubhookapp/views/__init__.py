@@ -1,4 +1,6 @@
 from flask import request, redirect, abort, session, url_for
+from flask.ext.mako import render_template
+
 from githubhookapp.core import app
 
 __all__ = globals().keys()
