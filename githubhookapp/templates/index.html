@@ -1,0 +1,23 @@
+<%inherit file="/_base.html"/>
+<%!
+    from githubhookapp.github import get_user_orgs
+%>
+<p>
+    % if user_login:
+        You are logged in in as 
+            <strong><a href="https://github.com/${user_login|h}">${user_login|h}</a></strong>.
+    % else:
+        You are not logged in; <a href="/github/login">login now</a>.
+    % endif
+<p>
+    Add the following hook to your repos:
+    <% hook = request.host_url.rstrip('/') + url_for('githubhook.post') %>
+    <strong><a href="${hook|h}">${hook|h}</a></strong>
+<p>
+    <% orgs = get_user_orgs() %>
+    Organizations (${len(orgs)}):
+    <ul>
+        % for org in orgs:
+            <li>${org['login']|h}
+        % endfor
+    </ul>
